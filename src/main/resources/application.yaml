@@ -1,0 +1,97 @@
+spring:
+  h2.console:
+    enabled: true
+    path: /h2
+
+  profiles:
+    active: h2mem
+
+  http.encoding:
+    force: false
+    enabled: false
+    force-response: false
+
+  application.name: bsapi-can-customer-cpn
+
+  batch:
+    job.enabled: false
+    initialize-schema: never
+
+  jpa:
+    properties:
+      javax:
+        persistence:
+          validation.mode: none
+          sharedCache.mode: ENABLE_SELECTIVE
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  data:
+    rest:
+      default-media-type: application/json
+
+server:
+  port: 8081
+  servlet.context-path: /can
+
+metrics.export:
+  delay-millis: 10000
+  enabled: true
+
+app.metrics.export.statsd:
+  host: localhost
+  port: 8125
+  prefix: bsapicancustomercpn
+
+info:
+  app:
+    name: BS API Customer
+    description: Business API for Brazil Customer Data
+    version: 0.0.1-SNAPSHOT
+
+---
+
+spring:
+  profiles: h2mem
+  datasource:
+    continue-on-error: false
+    url: jdbc:h2:mem:app;
+    username: sa
+    password:
+    platform: h2
+    driver-class-name: org.h2.Driver
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+  flyway:
+    enabled: true
+    clean-on-validation-error: true
+    validate-on-migrate: false
+    locations: classpath:db/migration/h2
+
+---
+
+spring:
+  profiles: cdpcts
+  datasource:
+    continue-on-error: false
+    url: ${CDP_CTS_URL}
+    username: ${CDP_CTS_USR}
+    password: ${CDP_CTS_PWD}
+    driver-class-name: com.cloudera.impala.jdbc41.Driver
+    tomcat:
+      test-on-borrow: true
+      validation-query: SELECT 1
+  jpa:
+    database:
+    database-platform: org.hibernate.dialect.HSQLDialect
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    show-sql: false
+  flyway:
+    enabled: false
+
+---
