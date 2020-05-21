@@ -14,7 +14,7 @@ public interface ResponseWordService {
 	 * @return
 	 * @throws PayLoadException
 	 */
-	public ResponseWords getWordDetails(String word) throws PayLoadException;
+	public ResponseWords getWordDetails(String word,int limit) throws PayLoadException;
 	
 	public Collection<List<String>> getWordDataStorebyUser() throws PayLoadException;
 	

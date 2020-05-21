@@ -25,13 +25,19 @@ public class ResponseWordServiceImpl implements ResponseWordService {
 	
 	Collection<List<String>> result = new ArrayList<>();
 
-	final int pageSize = 5;
+	 int pageSize = 5;
 	final AtomicInteger counter = new AtomicInteger();
 	ResponseWords responseWords;
 
 	
 	@Override
-	public ResponseWords getWordDetails(String word) throws PayLoadException {
+	public ResponseWords getWordDetails(String word,int limit) throws PayLoadException {
+		
+		if(limit>0)
+		{
+			pageSize=limit;
+		}
+
 
 		boolean specialChar;
 		specialChar = getSpecialCharacter(word);
