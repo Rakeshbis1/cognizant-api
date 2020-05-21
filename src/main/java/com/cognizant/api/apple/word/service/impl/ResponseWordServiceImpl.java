@@ -1,5 +1,6 @@
 package com.cognizant.api.apple.word.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,8 @@ public class ResponseWordServiceImpl implements ResponseWordService {
 
 	@Autowired
 	private WordService wordService;
+	
+	Collection<List<String>> result = new ArrayList<>();
 
 	final int pageSize = 5;
 	final AtomicInteger counter = new AtomicInteger();
@@ -39,6 +42,7 @@ public class ResponseWordServiceImpl implements ResponseWordService {
 
 		List<String> wordList = wordService.dictionaryMethod(word);
 		Collections.sort(wordList);
+		saveList(wordList);
 
 		final Collection<List<String>> result = wordList.stream()
 				.collect(Collectors.groupingBy(it -> counter.getAndIncrement() / pageSize)).values();
@@ -59,6 +63,21 @@ public class ResponseWordServiceImpl implements ResponseWordService {
 		Matcher m = p.matcher(word);
 		boolean b = m.find();
 		return b;
+	}
+	
+	
+	@Override
+	public Collection<List<String>> getWordDataStorebyUser() throws PayLoadException {
+		// TODO Auto-generated method stub
+		return result;
+	}
+
+	@Override
+	public Collection<List<String>> saveList(List<String> wordList) throws PayLoadException {
+		// TODO Auto-generated method stub
+		result.add(wordList);
+		
+		return result;
 	}
 
 }

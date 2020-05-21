@@ -1,5 +1,6 @@
 package com.cognizant.api.apple.word.service;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface WordService {
@@ -9,5 +10,6 @@ public interface WordService {
 	 * @return
 	 */
 	public List<String> dictionaryMethod(String words);
+	
 
 }
